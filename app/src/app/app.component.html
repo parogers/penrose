@@ -1,4 +1,38 @@
 <h1>Interactive Penrose Tiling</h1>
 
-<app-penrose>
-</app-penrose>
+<div class="penrose-box">
+  <app-penrose
+    #penrose
+    [subdivisions]="subdivisions"
+    [showPrevIteration]="showPrevIteration"
+    >
+  </app-penrose>
+</div>
+
+<div class="control-box">
+
+  <div class="iterations-box">
+    <span>Iterations: </span>
+    
+    <mat-slider
+      min="0"
+      max="8"
+      value="1"
+      thumbLabel="true"
+      tickInterval="1"
+      (change)="handleSubChanged($event)"
+      (input)="handleSubMoved($event)"
+      >
+    </mat-slider>
+  </div>
+
+  <div>
+    <mat-checkbox [(ngModel)]="showPrevIteration">Show previous iteration</mat-checkbox>
+  </div>
+
+  <div>
+    <mat-checkbox [(ngModel)]="updateRealtime">Update in realtime</mat-checkbox>
+  </div>
+
+</div>
+

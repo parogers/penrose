@@ -17,13 +17,30 @@
  * See LICENSE.txt for the full text of the license.
  */
 
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { PenroseComponent } from './penrose/penrose.component';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-    title = 'app';
+export class AppComponent
+{
+    public subdivisions: number = 1;
+    public showPrevIteration: boolean = false;
+    public updateRealtime: boolean = false;
+    @ViewChild('penrose', { static: true }) penrose;
+
+    handleSubChanged(event)
+    {
+        this.subdivisions = event.value;
+    }
+
+    handleSubMoved(event)
+    {
+        if (this.updateRealtime) {
+            this.subdivisions = event.value;
+        }
+    }
 }

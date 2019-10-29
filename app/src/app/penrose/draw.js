@@ -21,14 +21,13 @@ const KITE_COLOUR = '#00ffff';
 const DART_COLOUR = '#ff0000';
 const OUTLINE_COLOUR = "#555555";
 
-export function drawTiling(canvas, context, collection)
+export function drawTiling(canvas, context, collection, previous)
 {
     // The tiles are rendered within a 2x2 unit box about the origin (-1 to 1)
     // Automatically scale that box up to most of the canvas area.
-    let scale = 0.9*Math.min(canvas.width, canvas.height)/2;
+    let scale = 0.95*Math.min(canvas.width, canvas.height)/2;
     let viewCenterX = 0;
     let viewCenterY = 0;
-    let showPreviousIter = false;
     
     //var start = (new Date()).getTime();
     context.save();
@@ -54,7 +53,7 @@ export function drawTiling(canvas, context, collection)
 	drawTile(context, collection.darts[n], true, true);
     }
 
-    if (showPreviousIter && previous !== null)
+    if (previous)
     {
 	/* Draw outlines of the previous iteration */
 	context.lineWidth = 2/scale;

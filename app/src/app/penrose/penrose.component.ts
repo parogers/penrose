@@ -17,7 +17,13 @@
  * See LICENSE.txt for the full text of the license.
  */
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    ViewChild
+} from '@angular/core';
+
 import {
     Tile,
     TileCollection,
@@ -35,28 +41,69 @@ import { drawTiling } from './draw';
 })
 export class PenroseComponent implements OnInit
 {
-    @ViewChild('canvas') private canvas: any;
+    @ViewChild('canvas', { static: true }) private canvas: any;
     private context: any;
+    private previous: any;
     private collection: any;
+    private _subdivisions: number = 1;
+    private _showPrevIteration: boolean = false;
 
     constructor() { }
 
     ngOnInit()
     {
         this.context = this.canvas.nativeElement.getContext('2d');
-        this.collection = generateSunShape().subdivide().subdivide().subdivide();
+        this.updateTiling();
+    }
+
+    @Input() set showPrevIteration(value)
+    {
+        if (value !== this._showPrevIteration)
+        {
+            this._showPrevIteration = value;
+            this.updateTiling();
+        }
+    }
+
+    get showPrevIteration() {
+        return this._showPrevIteration;
+    }
+
+    @Input() set subdivisions(value)
+    {
+        if (value !== this._subdivisions)
+        {
+            this._subdivisions = value;
+            this.updateTiling();
+        }
+    }
+
+    get subdivisions() {
+        return this._subdivisions;
+    }
+
+    private updateTiling()
+    {
+        this.previous = null;
+        this.collection = generateSunShape();
+        for (let n = 0; n < this.subdivisions; n++)
+        {
+            this.previous = this.collection;
+            this.collection = this.collection.subdivide();
+        }
 
         requestAnimationFrame(() => {
             this.draw();
         });
     }
-
+    
     private draw()
     {
         drawTiling(
             this.canvas.nativeElement,
             this.context,
-            this.collection
+            this.collection,
+            this.showPrevIteration ? this.previous : null
         );
     }
 }
