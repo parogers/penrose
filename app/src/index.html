@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>App</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  </head>
+  <body>
+    <script type="text/javascript" src="assets/contrib/sylvester.js">
+    </script>
+
+    <script type="text/javascript">
+
+      // Back-fill sylvester with a vector normalize function
+
+      /* Returns a unit vector pointing in the same direction */
+      Vector.prototype.normalize = function() 
+      {
+          /* Who calls it modulus??? */
+          return this.x(1/this.modulus());
+      }
+    </script>
+    
+    <app-root></app-root>
+  </body>
+</html>
