@@ -31,34 +31,34 @@ export class TileCollection
      * of half tiles */
     subdivide()
     {
-        var coll = new TileCollection();
-        for (var n = 0; n < this.kites.length; n++) 
+        let coll = new TileCollection();
+        for (let n = 0; n < this.kites.length; n++) 
         {
-	    var tile = this.kites[n];
+	    let tile = this.kites[n];
 	    if (tile.left === null) {
 	        /* Right-hand tile */
-	        subdivide_half_kite(tile, "right", coll);
+	        subdivideHalfKite(tile, "right", coll);
 	    } else if (tile.right === null) {
 	        /* Left-hand tile */
-	        subdivide_half_kite(tile, "left", coll);
+	        subdivideHalfKite(tile, "left", coll);
 	    } else {
 	        /* Full tile */
-	        subdivide_half_kite(tile, "right", coll);
-	        subdivide_half_kite(tile, "left", coll);
+	        subdivideHalfKite(tile, "right", coll);
+	        subdivideHalfKite(tile, "left", coll);
 	    }
         }
 
-        for (var n = 0; n < this.darts.length; n++)
+        for (let n = 0; n < this.darts.length; n++)
         {
-	    var tile = this.darts[n];
+	    let tile = this.darts[n];
 	    if (tile.left === null) {
-	        subdivide_half_dart(tile, "right", coll);
+	        subdivideHalfDart(tile, "right", coll);
 	    } else if (tile.right === null) {
-	        subdivide_half_dart(tile, "left", coll);
+	        subdivideHalfDart(tile, "left", coll);
 	    } else {
 	        /* Full tile */
-	        subdivide_half_dart(tile, "right", coll);
-	        subdivide_half_dart(tile, "left", coll);
+	        subdivideHalfDart(tile, "right", coll);
+	        subdivideHalfDart(tile, "left", coll);
 	    }
         }
         return coll;
@@ -78,7 +78,7 @@ export class Tile
 	        this.p2 = pt.add(dir.x(1/PHI));
 	    }
 
-	    var mat = Matrix.Rotation(radians(36));
+	    let mat = Matrix.Rotation(radians(36));
 	    this.right = pt.add(mat.x(dir));
 	    this.left = pt.add(mat.inv().x(dir));
         } else {
@@ -92,7 +92,7 @@ export class Tile
     /* Returns a new tile representing the left/right side of this tile */
     getHalf(side)
     {
-        var tile = new Tile(this.type);
+        let tile = new Tile(this.type);
         tile.p1 = this.p1;
         tile.p2 = this.p2;
         tile[side] = this[side];
@@ -113,65 +113,44 @@ export function radians(angle)
     return Math.PI * angle / 180.0;
 }
 
-function split_tiles(tiles)
-{
-    var newTiles = [];
-
-    for (var n = 0; n < tiles.length; n++) 
-    {
-	var leftTile = new Tile(tiles[n].type);
-	leftTile.p1 = tiles[n].p1;
-	leftTile.p2 = tiles[n].p2;
-	leftTile.left = tiles[n].left;
-	newTiles.push(leftTile);
-
-	var rightTile = new Tile(tiles[n].type);
-	rightTile.p1 = tiles[n].p1;
-	rightTile.p2 = tiles[n].p2;
-	rightTile.right = tiles[n].right;
-	newTiles.push(rightTile);
-    }
-    return newTiles;
-}
-
-function subdivide_half_kite(tile, side, collection)
+function subdivideHalfKite(tile, side, collection)
 {
     /* Generate a half dart (right-hand) */
-    var opp = (side === "left" ? "right" : "left");
-    var dist = tile.p2.subtract(tile[side]).modulus();
-    var pt = tile.p1;
-    var dir = tile[side].subtract(tile.p1).normalize().x(dist);
-    var dart = new Tile(Tile.DART, pt, dir);
+    let opp = (side === "left" ? "right" : "left");
+    let dist = tile.p2.subtract(tile[side]).modulus();
+    let pt = tile.p1;
+    let dir = tile[side].subtract(tile.p1).normalize().x(dist);
+    let dart = new Tile(Tile.DART, pt, dir);
     dart[side] = null;
     collection.darts.push(dart);
 
-    //var dart1 = dart.get_half(side)
-    //var dart2 = dart.get_half(opp)
+    //let dart1 = dart.get_half(side)
+    //let dart2 = dart.get_half(opp)
     //collection.darts.push(dart1);
     //collection.darts.push(dart2);
 
     /* Generate a full kite */
-    var dir = dart[opp].subtract(tile[side]);
-    var pt = tile[side];
+    dir = dart[opp].subtract(tile[side]);
+    pt = tile[side];
 
-    var kite = new Tile(Tile.KITE, pt, dir);
-    var tile1 = kite.getHalf(side);
-    var tile2 = kite.getHalf(opp);
+    let kite = new Tile(Tile.KITE, pt, dir);
+    let tile1 = kite.getHalf(side);
+    let tile2 = kite.getHalf(opp);
     collection.kites.push(tile1);
     collection.kites.push(tile2);
 }
 
-function subdivide_half_dart(tile, side, collection)
+function subdivideHalfDart(tile, side, collection)
 {
     /* Generate a half-kite tile (left hand) */
-    var opp = (side === "left" ? "right" : "left");
-    var dir = tile.p2.subtract(tile.p1);
-    var kite = new Tile(Tile.KITE, tile.p1, dir);
+    let opp = (side === "left" ? "right" : "left");
+    let dir = tile.p2.subtract(tile.p1);
+    let kite = new Tile(Tile.KITE, tile.p1, dir);
     kite[opp] = null;
     collection.kites.push(kite);
     /* Generate a half-dart tile (left hand) */
-    var dir = kite[side].subtract(tile[side]).x(PHI);
-    var dart = new Tile(Tile.DART, tile[side], dir);
+    dir = kite[side].subtract(tile[side]).x(PHI);
+    let dart = new Tile(Tile.DART, tile[side], dir);
     dart[opp] = null;
     collection.darts.push(dart);
 }

@@ -7,6 +7,7 @@ import { PenroseComponent } from './penrose/penrose.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider'; 
 import { MatCheckboxModule } from '@angular/material/checkbox'; 
+import { MatSelectModule } from '@angular/material/select'; 
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         FormsModule,
         MatSliderModule,
         MatCheckboxModule,
+        MatSelectModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

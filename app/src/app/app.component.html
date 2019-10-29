@@ -5,6 +5,7 @@
     #penrose
     [subdivisions]="subdivisions"
     [showPrevIteration]="showPrevIteration"
+    [startingShape]="selectedShape"
     >
   </app-penrose>
 </div>
@@ -24,6 +25,14 @@
       (input)="handleSubMoved($event)"
       >
     </mat-slider>
+  </div>
+
+  <div>
+    <mat-select [(value)]="selectedShape">
+      <mat-option *ngFor="let shape of startingShapes" [value]="shape">
+        {{ shape }}
+      </mat-option>
+    </mat-select>
   </div>
 
   <div>

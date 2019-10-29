@@ -30,6 +30,9 @@ export class AppComponent
     public subdivisions: number = 1;
     public showPrevIteration: boolean = false;
     public updateRealtime: boolean = false;
+    public startingShapes: any = ['star', 'sun'];
+    public selectedShape: string = 'star';
+
     @ViewChild('penrose', { static: true }) penrose;
 
     handleSubChanged(event)

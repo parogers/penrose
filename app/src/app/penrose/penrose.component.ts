@@ -47,6 +47,7 @@ export class PenroseComponent implements OnInit
     private collection: any;
     private _subdivisions: number = 1;
     private _showPrevIteration: boolean = false;
+    private _startingShape: string = 'star';
 
     constructor() { }
 
@@ -82,10 +83,30 @@ export class PenroseComponent implements OnInit
         return this._subdivisions;
     }
 
+    
+    @Input() set startingShape(value)
+    {
+        if (this._startingShape !== value) {
+            this._startingShape = value;
+            this.updateTiling();
+        }
+    }
+
+    private generateStartingShape()
+    {
+        if (this._startingShape === 'star') return generateStarShape();
+        if (this._startingShape === 'sun') return generateSunShape();
+        return null;
+    }
+
     private updateTiling()
     {
         this.previous = null;
-        this.collection = generateSunShape();
+        this.collection = this.generateStartingShape();
+        if (this.collection === null) {
+            return;
+        }
+        
         for (let n = 0; n < this.subdivisions; n++)
         {
             this.previous = this.collection;

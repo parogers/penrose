@@ -17,6 +17,13 @@ h1 {
         margin-bottom: 1em;
     }
 
+    mat-select {
+        width: 50%;
+        border: solid 1px lightgrey;
+        font-height: 1.5em;
+        padding: 0.5em;
+    }
+
     .iterations-box
     {
         margin-bottom: 0;
